@@ -1,0 +1,234 @@
+{
+    "manifestVersion": 1,
+    "id": "ADO_WorkItems_Dependencies",
+    "version": "1.0.2",
+    "name": "Make Dependencies Betwines WorkItems",
+    "scopes": [
+        "vso.work_write"
+    ],
+    "description": "Give you the ability to make Dependencies that hod the continues of flow, base on Other work item.",
+    "publisher": "AviHadad",
+    "icons": {
+        "default": "img/logo.png"
+    },
+    "targets": [{
+        "id": "Microsoft.VisualStudio.Services",
+        "version": "[15.0,)"
+    }],
+    "tags": [
+        "Work Item",
+        "Work Item control",
+        "Usability",
+        "Dependencies"
+    ],
+    "content": {
+        "details": {
+            "path": "details.md"
+        },
+        "license": {
+            "path": "LICENSE.md"
+        },
+        "privacy": {
+            "path": "PRIVACY.md"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/avih75/ApproveFieldControl"
+    },
+    "links": {
+        "support": {
+            "uri": "https://github.com/avih75/ApproveFieldControl/issues"
+        },
+        "license": {
+            "uri": "https://github.com/avih75/ApproveFieldControl/blob/master/LICENSE.md"
+        },
+        "privacypolicy": {
+            "uri": "https://github.com/avih75/ApproveFieldControl/blob/master/PRIVACY.md"
+        },
+        "learn": {
+            "uri": "https://github.com/avih75/ApproveFieldControl/blob/master/README.md"
+        },
+        "repository": {
+            "uri": "https://github.com/avih75/ApproveFieldControl"
+        },
+        "issues": {
+            "uri": "https://github.com/avih75/ApproveFieldControl/issues"
+        }
+    },
+    "files": [{
+            "path": "img",
+            "addressable": true
+        },
+        {
+            "path": "scripts",
+            "addressable": true
+        },
+        {
+            "path": "approvelIndex.html",
+            "addressable": true
+        }
+    ],
+    "categories": [
+        "Azure Boards"
+    ],
+    "contributions": [{
+        "id": "Approvel",
+        "description": "Add an Label with summary of several fields",
+        "type": "ms.vss-work-web.work-item-form-control",
+        "targets": [
+            "ms.vss-work-web.work-item-form"
+        ],
+        "properties": {
+            "name": "Approvel control",
+            "uri": "approvelIndex.html",
+            "inputs": [{
+                "id": "ApprovelStateField",
+                "name": "Approvel State Field",
+                "description": "Field for track the approve state",
+                "type": "WorkItemField",
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": true
+                }
+            }, {
+                "id": "ValueToApproveField",
+                "name": "Field To Approve",
+                "description": "The Field require Approve",
+                "type": "WorkItemField",
+                "properties": {
+                    "workItemFieldTypes": [
+                        "Integer",
+                        "Double"
+                    ]
+                },
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": true
+                }
+            }, {
+                "id": "ApprovedValueField",
+                "name": "Approved Value Field",
+                "description": "Field that keep the last Approved value",
+                "type": "WorkItemField",
+                "properties": {
+                    "workItemFieldTypes": [
+                        "Integer",
+                        "Double"
+                    ]
+                },
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": true
+                }
+            }, {
+                "id": "LastRequested",
+                "name": "Last requested Value Field",
+                "description": "Field that keep the last requested value",
+                "type": "WorkItemField",
+                "properties": {
+                    "workItemFieldTypes": [
+                        "Integer",
+                        "Double"
+                    ]
+                },
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": true
+                }
+            }, {
+                "id": "LastRequestState",
+                "name": "Last requested State Field",
+                "description": "Field that keep the last requested state",
+                "type": "WorkItemField",
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": true
+                }
+            }, {
+                "id": "ApproveBy",
+                "name": "Approve By Field",
+                "description": "Field that keep the responser name",
+                "type": "WorkItemField",
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": true
+                }
+            }, {
+                "id": "ApproveValueCondition",
+                "name": "Need Approve value",
+                "description": "Number that represent the value needed approve",
+                "type": "TextArea",
+                "properties": {
+                    "workItemFieldTypes": [
+                        "Integer",
+                        "Double"
+                    ]
+                },
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": true
+                }
+            }, {
+                "id": "ApproveCondition",
+                "name": "Need Approve condition (Any > < =)",
+                "description": "write the selected condition : Any or > or < or =",
+                "type": "TextArea",
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": true
+                }
+            }, {
+                "id": "ApprovedPreviusApprove",
+                "name": "Previuse approve State Field",
+                "description": "Field that use if it cascade to previuse approve state",
+                "type": "WorkItemField",
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": false
+                }
+            }, {
+                "id": "ApprovedComment",
+                "name": "Approve Comment Field",
+                "description": "Field for Comment",
+                "type": "WorkItemField",
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": false
+                }
+            }, {
+                "id": "Approver",
+                "name": "Approve Attended User Field",
+                "description": "Field that select the user who need to approve it",
+                "type": "WorkItemField",
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": false
+                }
+            }, {
+                "id": "BlockField",
+                "name": "Block Field",
+                "description": "Field that will be empty or full with Closed to create mandatory block to the process",
+                "type": "WorkItemField",
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": false
+                }
+            }, {
+                "id": "TrigerNeedApproveState",
+                "name": "Work item state for Approve",
+                "description": "the state that the work item need to be to trigger the approve request",
+                "type": "TextArea",
+                "properties": {
+                    "workItemFieldTypes": [
+                        "String"
+                    ]
+                },
+                "validation": {
+                    "dataType": "String",
+                    "isRequired": false
+                }
+            }]
+        }
+    }]
+}

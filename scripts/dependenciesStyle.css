@@ -1,0 +1,14 @@
+/* .StateImage {
+    width: 20;
+    height: 20;
+}
+
+.ButtonImage {
+    width: 10;
+    height: 10;
+} */
+
+body {
+    width: max-content;
+    height: auto;
+}

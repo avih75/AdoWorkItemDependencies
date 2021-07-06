@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="scripts/VSS.SDK.min.js"></script>
+    <link rel="stylesheet" href="scripts/dependenciesStyle.css" type="text/css" />
+    <title>WorkItems Dependencies</title>
+    <script>
+        VSS.init({
+            explicitNotifyLoaded: true,
+            usePlatformScripts: true,
+            usePlatformStyles: true,
+            configureModuleLoader: true,
+            applyTheme: true
+        });
+        VSS.require(["scripts/dependenciesApp"], function() {
+            VSS.notifyLoadSucceeded();
+            VSS.resize(null, null);
+        });
+    </script>
+</head>
+
+<body>
+    <div id="DependencieState">
+    </div>
+</body>
+
+</html>
