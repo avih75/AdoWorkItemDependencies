@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "ADO_WorkItems_Dependencies",
-    "version": "1.0.4",
+    "version": "1.0.11",
     "name": "Make Dependencies Betwines WorkItems",
     "scopes": [
         "vso.work_write"
@@ -93,8 +93,8 @@
                 }
             }, {
                 "id": "RelBlocekd",
-                "name": "Field To Approve",
-                "description": "The Field require Approve",
+                "name": "Relation To Block by",
+                "description": "The relation type to block if needed.",
                 "type": "TextArea", 
                 "validation": {
                     "dataType": "String",
@@ -102,8 +102,8 @@
                 }
             }, {
                 "id": "DependOnState",
-                "name": "Approved Value Field",
-                "description": "Field that keep the last Approved value",
+                "name": "Dependent State",
+                "description": "The state that need to be block of the related workitem.",
                 "type": "TextArea", 
                 "validation": {
                     "dataType": "String",

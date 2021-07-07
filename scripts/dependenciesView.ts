@@ -1,16 +1,20 @@
-import { WorkItemRelation } from "TFS/WorkItemTracking/Contracts";
+import { WorkItemExpand, WorkItemRelation } from "TFS/WorkItemTracking/Contracts";
 import { WorkItemFormService } from "TFS/WorkItemTracking/Services";
+import RestClient = require("TFS/WorkItemTracking/RestClient");
 
 let ListBlockedStates: Array<string>;
 let DependOnState: string;
 let State: string;
 let Rel: string;
 let IsBlock: boolean;
-
-export function TryChangeValue(changedFields: { [key: string]: any; }) {
-    // if  state changed
-    if (changedFields["System.State"] && ListBlockedStates.find(changedFields["System.State"])) {
-        BlockState(changedFields["System.State"]);
+let client: RestClient.WorkItemTrackingHttpClient4_1 = RestClient.getClient();
+export function TryChangeValue(changedFields: { [key: string]: any; }) { 
+    if (changedFields["System.State"]) {
+        ListBlockedStates.forEach(checkState => {
+            if (checkState == changedFields["System.State"] && IsBlock) {
+                BlockState(changedFields["System.State"]);
+            }
+        });
     }
 }
 export function CreateView(dependOnState: string, listBlockedState: string, relBlocekd: string) {
@@ -34,20 +38,31 @@ function ReadData() {
                     let messageDiv2 = $("<label/>");
                     if (WorkItemRelations.length > 0) {
                         let secondMessage = "On hold Because : ";
-                        messageDiv.text("Dependens need to be " + State);
+                        messageDiv.text("Dependens need to be " + DependOnState);
+                        let ids: number[] = [];
+                        let Urls: string[] = [];
                         WorkItemRelations.forEach(WorkItemRelation => {
                             if (WorkItemRelation.rel == Rel) {
-                                let href = $("<a/>");
-                                href.text(WorkItemRelation.attributes["System.Id"] + " " + WorkItemRelation.attributes["System.WorkItemType"] + " " + WorkItemRelation.attributes["System.State"]);
-                                href.attr("link", WorkItemRelation.url);
-                                if (WorkItemRelation.attributes["System.State"] != DependOnState) {
-                                    IsBlock = true;
-                                    secondMessage += WorkItemRelation.attributes["System.Id"] + " ";
-                                }
-                                dependenciesDiv.append(href);
+                                let linkURL = WorkItemRelation.url;
+                                let idBuild = linkURL.split('/')
+                                let id = Number.parseInt(idBuild[idBuild.length - 1]);
+                                ids.push(id); Urls.push(linkURL);
                             }
                         });
-                        messageDiv2.text(secondMessage);
+                        client.getWorkItems(ids, null, null, WorkItemExpand.All).then((workItems) => {
+                            workItems.forEach(workItem => {
+                                let href = $("<a/>");
+                                href.text(workItem.fields["System.Id"] + " " + workItem.fields["System.WorkItemType"] + " " + workItem.fields["System.State"]);
+                                href.attr("link", workItem.url);
+                                dependenciesDiv.append(href);
+                                if (workItem.fields["System.State"] != DependOnState) {
+                                    IsBlock = true;
+                                    secondMessage += workItem.fields["System.Id"] + " ";
+                                }
+                                messageDiv2.text(secondMessage);
+                                VSS.resize();
+                            })
+                        })
                     }
                     else {
                         messageDiv.text("Not Dependens ");
@@ -58,6 +73,7 @@ function ReadData() {
                     body.append(messageDiv);
                     body.append(dependenciesDiv);
                     body.append(messageDiv2);
+                    VSS.resize();
                 })
             })
         }
@@ -66,5 +82,9 @@ function ReadData() {
 
 function BlockState(state: string) {
     let message: string = "You cant chage state to " + state + " there is dependencies not " + DependOnState;
-    // change back the state !!
+    alert(message);
+    WorkItemFormService.getService().then(
+        (service) => {
+            service.setFieldValue("System.State", State);
+        });
 }
